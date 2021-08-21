@@ -1,4 +1,5 @@
 const commander = require('commander');
+const { createCanvas } = require('canvas');
 
 const BaseCommand = require('./base-command');
 const FileController = require('../file-controller');
@@ -15,7 +16,17 @@ class CreateImageCommand extends BaseCommand {
 
         console.log(`Creating ${count} images`);
 
-        
+        const width = 640;
+        const height = 480;
+
+        const canvas = createCanvas(width, height);
+        const context = canvas.getContext('2d');
+
+        context.fillStyle = '#F00';
+        context.fillRect(0, 0, width, height);
+
+        const buffer = canvas.toBuffer('image/png');
+        fileController.writeFile('./images/my-image.png', buffer);
       });
   }
 }
