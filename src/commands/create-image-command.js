@@ -1,8 +1,8 @@
 const commander = require('commander');
-const { createCanvas } = require('canvas');
 
 const BaseCommand = require('./base-command');
 const FileController = require('../file-controller');
+const ImageFactory = require('../factories/image-factory');
 
 class CreateImageCommand extends BaseCommand {
   constructor() {
@@ -12,21 +12,18 @@ class CreateImageCommand extends BaseCommand {
       .argument('<count>', 'number of images to create')
       .action(async (count) => {
         const fileController = new FileController();
+        const numImages = parseInt(count);
+
+        // Create images directory.
         fileController.mkdir('./images');
 
-        console.log(`Creating ${count} images`);
+        // Create image(s).
+        for (let i=0; i<numImages; i++) {
+          const imageBuffer = ImageFactory.createRandomImage();
+          fileController.writeFile(`./images/image-${i}.png`, imageBuffer);
+        }
 
-        const width = 640;
-        const height = 480;
-
-        const canvas = createCanvas(width, height);
-        const context = canvas.getContext('2d');
-
-        context.fillStyle = '#F00';
-        context.fillRect(0, 0, width, height);
-
-        const buffer = canvas.toBuffer('image/png');
-        fileController.writeFile('./images/my-image.png', buffer);
+        console.log(`Created ${numImages} image${numImages > 1 ? 's' : ''}.`);
       });
   }
 }
