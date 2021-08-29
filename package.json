@@ -24,6 +24,7 @@
   "homepage": "https://github.com/harrymaynard/fl-cli#readme",
   "dependencies": {
     "canvas": "^2.8.0",
-    "commander": "^8.0.0"
+    "commander": "^8.0.0",
+    "gifencoder": "^2.0.1"
   }
 }
