@@ -6,6 +6,7 @@ const ImageFactory = require('../factories/image-factory');
 
 const DEFAULT_GIF_WIDTH = 640;
 const DEFAULT_GIF_HEIGHT = 480;
+const DIRECTORY_PATH = './rmc-images';
 
 class PNGCommand extends BaseCommand {
   constructor() {
@@ -22,6 +23,7 @@ class PNGCommand extends BaseCommand {
         const width = parseInt(options.width);
         const height = parseInt(options.height);
 
+        // Check for non-numeric options.
         if (isNaN(width)) {
           console.error('\'width\' option must be numeric.');
           return;
@@ -32,11 +34,11 @@ class PNGCommand extends BaseCommand {
         }
 
         // Create images directory.
-        fileController.mkdir('./images');
+        fileController.mkdir(DIRECTORY_PATH);
 
         // Create image(s).
         for (let i = 0; i < numImages; i++) {
-          const filePath = `./images/image-${i}.png`;
+          const filePath = `${DIRECTORY_PATH}/image-${i}.png`;
           const imageBuffer = ImageFactory.createPNG(width, height);
           fileController.writeFile(filePath, imageBuffer);
           console.log(`Created PNG at: ${filePath}`);

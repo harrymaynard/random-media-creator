@@ -4,25 +4,37 @@ const GIFEncoder = require('gifencoder');
 const BaseMediaFactory = require('./base-media-factory');
 
 const SQUARE_SIZE = 10;
-const FRAMES_PER_SECOND = 30;
-const DURATION = 2; // Seconds.
 
 class ImageFactory extends BaseMediaFactory {
+  /**
+   * Creates a random PNG image.
+   * @param {Number} width 
+   * @param {Number} height 
+   * @returns image Buffer.
+   */
   createPNG(width, height) {
     const canvas = this._getCanvasFrame(width, height);
     return canvas.toBuffer('image/png');
   }
 
-  createGIF(width, height) {
+  /**
+   * Creates a random animated GIF image.
+   * @param {Number} width 
+   * @param {Number} height 
+   * @param {Number} fps 
+   * @param {Number} duration 
+   * @returns image Buffer.
+   */
+  createGIF(width, height, fps, duration) {
     const encoder = new GIFEncoder(width, height);
 
     encoder.start();
     encoder.setRepeat(0); // 0 for repeat, -1 for no-repeat.
-    encoder.setDelay(Math.ceil(1000 / FRAMES_PER_SECOND)); // frame delay in ms.
+    encoder.setDelay(Math.ceil(1000 / fps)); // frame delay in ms.
     encoder.setQuality(10); // image quality. 10 is default.
     
     // Add frames.
-    for (let i = 0; i < DURATION * FRAMES_PER_SECOND; i++) {
+    for (let i = 0; i < duration * fps; i++) {
       const canvas = this._getCanvasFrame(width, height);
       const context = canvas.getContext('2d');
       encoder.addFrame(context);
@@ -35,6 +47,12 @@ class ImageFactory extends BaseMediaFactory {
     return encoder.out.getData();
   }
 
+  /**
+   * Creates a random canvas image frame.
+   * @param {Number} width 
+   * @param {Number} height 
+   * @returns HTML canvas.
+   */
   _getCanvasFrame(width, height) {
     const canvas = createCanvas(width, height);
     const context = canvas.getContext('2d');

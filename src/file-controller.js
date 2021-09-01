@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 class FileController {
+  /**
+   * Writes file with specified name and contents.
+   * @param {String} fileName 
+   * @param {Buffer} content 
+   * @param {Object} options 
+   */
   writeFile(fileName, content, options) {
     fs.writeFileSync(fileName, content, options);
   }
