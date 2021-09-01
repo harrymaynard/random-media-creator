@@ -1,4 +1,5 @@
-# random-media-creator
+# Random Media Creator
+Command-line utility to create randomly generated media. Currently support PNG and animated GIF.
 
 ## Installation
 1. Clone repository.
