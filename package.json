@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harrymaynard/fl-cli.git"
+    "url": "git+https://github.com/harrymaynard/random-media-creator.git"
   },
   "keywords": [
     "cli"
@@ -19,9 +19,9 @@
   "author": "Harry Maynard",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/harrymaynard/fl-cli/issues"
+    "url": "https://github.com/harrymaynard/random-media-creator/issues"
   },
-  "homepage": "https://github.com/harrymaynard/fl-cli#readme",
+  "homepage": "https://github.com/harrymaynard/random-media-creator#readme",
   "dependencies": {
     "canvas": "^2.8.0",
     "commander": "^8.0.0",
