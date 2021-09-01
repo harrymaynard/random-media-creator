@@ -1,6 +1,6 @@
 {
   "name": "random-media-creator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool for generating random media",
   "main": "index.js",
   "scripts": {
