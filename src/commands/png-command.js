@@ -4,8 +4,8 @@ const BaseCommand = require('./base-command');
 const FileController = require('../file-controller');
 const ImageFactory = require('../factories/image-factory');
 
-const DEFAULT_GIF_WIDTH = 640;
-const DEFAULT_GIF_HEIGHT = 480;
+const DEFAULT_IMAGE_WIDTH = 640;
+const DEFAULT_IMAGE_HEIGHT = 480;
 const DIRECTORY_PATH = './rmc-images';
 
 class PNGCommand extends BaseCommand {
@@ -14,8 +14,8 @@ class PNGCommand extends BaseCommand {
     this.command = new commander.Command('png');
     this.command
       .argument('<count>', 'number of images to create')
-      .option('-w, --width <width>', 'width of the GIF', `${DEFAULT_GIF_WIDTH}`)
-      .option('-h, --height <height>', 'height of the GIF', `${DEFAULT_GIF_HEIGHT}`)
+      .option('-w, --width <width>', 'width of the GIF', `${DEFAULT_IMAGE_WIDTH}`)
+      .option('-h, --height <height>', 'height of the GIF', `${DEFAULT_IMAGE_HEIGHT}`)
       .action(async (count) => {
         const fileController = new FileController();
         const numImages = parseInt(count);

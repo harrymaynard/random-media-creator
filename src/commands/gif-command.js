@@ -7,7 +7,7 @@ const ImageFactory = require('../factories/image-factory');
 const DEFAULT_IMAGE_WIDTH = 640;
 const DEFAULT_IMAGE_HEIGHT = 480;
 const DEFAULT_FPS = 30;
-const DEFAULT_DURATION = 2;
+const DEFAULT_DURATION = 2; // In seconds.
 const DIRECTORY_PATH = './rmc-images';
 
 class GIFCommand extends BaseCommand {
