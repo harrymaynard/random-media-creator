@@ -11,17 +11,10 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "action.ts",
-    "test.ts"
+    "index.ts",
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
-  ],
-  "ts-node": {
-    "esm": true,
-    "files": true,
-    "transpileOnly": true,
-    "experimentalResolver": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  ]
 }
