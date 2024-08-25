@@ -1,12 +1,9 @@
 import {
   type Canvas,
-  type CanvasRenderingContext2D,
-  createCanvas
+  type CanvasRenderingContext2D
 } from 'canvas'
 import GIFEncoder from 'gifencoder'
 import BaseMediaFactory from '@/factories/BaseMediaFactory'
-
-const SQUARE_SIZE: number = 10
 
 class ImageFactory extends BaseMediaFactory {
   /**
@@ -19,7 +16,7 @@ class ImageFactory extends BaseMediaFactory {
     width: number,
     height: number
   ): Buffer {
-    const canvas: Canvas = this._getCanvasFrame(width, height)
+    const canvas: Canvas = this.getCanvasFrame(width, height)
     return canvas.toBuffer('image/png')
   }
 
@@ -46,7 +43,7 @@ class ImageFactory extends BaseMediaFactory {
     
     // Add frames.
     for (let i = 0; i < duration * fps; i++) {
-      const canvas: Canvas = this._getCanvasFrame(width, height)
+      const canvas: Canvas = this.getCanvasFrame(width, height)
       const context: CanvasRenderingContext2D = canvas.getContext('2d')
       encoder.addFrame(context)
     }
@@ -56,28 +53,6 @@ class ImageFactory extends BaseMediaFactory {
 
     // Return data Buffer.
     return encoder.out.getData()
-  }
-
-  /**
-   * Creates a random canvas image frame.
-   * @param {Number} width 
-   * @param {Number} height 
-   * @returns HTML canvas.
-   */
-  private static _getCanvasFrame(
-    width: number,
-    height: number
-  ): Canvas {
-    const canvas: Canvas = createCanvas(width, height)
-    const context: CanvasRenderingContext2D = canvas.getContext('2d')
-    
-    for (let x = 0; x < width; x += SQUARE_SIZE) {
-      for (let y = 0; y < height; y += SQUARE_SIZE) {
-        context.fillStyle = this.getRandomBW()
-        context.fillRect(x, y, SQUARE_SIZE, SQUARE_SIZE)
-      }
-    }
-    return canvas
   }
 }
 
