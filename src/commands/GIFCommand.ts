@@ -1,4 +1,4 @@
-import { Command } from 'commander'
+import { Command, type OptionValues } from 'commander'
 import BaseCommand from './BaseCommand'
 import FileController from '../FileController'
 import ImageFactory from '../factories/ImageFactory'
@@ -20,13 +20,12 @@ export default class GIFCommand extends BaseCommand {
       .option('-fps, --fps <fps>', 'frames per second of the GIF', `${DEFAULT_FPS}`)
       .option('-d, --duration <duration>', 'duration of the GIF in seconds', `${DEFAULT_DURATION}`)
       .action(async (count) => {
-        const fileController = new FileController()
-        const numImages = parseInt(count)
-        const options = this.command.opts()
-        const width = parseInt(options.width)
-        const height = parseInt(options.height)
-        const fps = parseInt(options.fps)
-        const duration = parseInt(options.duration)
+        const options: OptionValues = this.command.opts()
+        const numImages: number = parseInt(count)
+        const width: number = parseInt(options.width)
+        const height: number = parseInt(options.height)
+        const fps: number = parseInt(options.fps)
+        const duration: number = parseInt(options.duration)
 
         // Check for non-numeric options.
         if (isNaN(width)) {
@@ -47,17 +46,17 @@ export default class GIFCommand extends BaseCommand {
         }
 
         // Create images directory.
-        fileController.mkdir(DIRECTORY_PATH)
+        FileController.mkdir(DIRECTORY_PATH)
 
         // Create image(s).
         for (let i=0; i<numImages; i++) {
           const filePath = `${DIRECTORY_PATH}/image-${i}.gif`
           const imageBuffer = ImageFactory.createGIF(width, height, fps, duration)
-          fileController.writeFile(filePath, imageBuffer)
+          FileController.writeFile(filePath, imageBuffer)
           console.log(`Created GIF at: ${filePath}`)
         }
 
-        console.log(`Created ${numImages} GIF${numImages > 1 ? 's' : ''}.`)
+        console.log(`Created ${numImages} GIF file${numImages > 1 ? 's' : ''}.`)
       })
   }
 }

@@ -4,17 +4,19 @@ import GIFCommand from './commands/GIFCommand'
 import PNGCommand from './commands/PNGCommand'
 import VersionCommand from './commands/VersionCommand'
 
-const program: Command = new Command()
-program.version(packageJSON.version)
-
 export default class CommandParser {
+  private program: Command
+
   constructor() {
-    program.addCommand(new GIFCommand().command)
-    program.addCommand(new PNGCommand().command)
-    program.addCommand(new VersionCommand().command)
+    this.program = new Command()
+    this.program.version(packageJSON.version)
+
+    this.program.addCommand(new GIFCommand().getCommand())
+    this.program.addCommand(new PNGCommand().getCommand())
+    this.program.addCommand(new VersionCommand().getCommand())
   }
 
-  read(args): void {
-    program.parse(args)
+  public read(args: Array<string>): void {
+    this.program.parse(args)
   }
 }

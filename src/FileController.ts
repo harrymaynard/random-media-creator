@@ -1,4 +1,13 @@
-import fs from 'fs'
+import {
+  type PathOrFileDescriptor,
+  type WriteFileOptions,
+  writeFileSync,
+  existsSync,
+  readdirSync,
+  rmSync,
+  rmdirSync,
+  mkdirSync
+} from 'fs'
 import path from 'path'
 
 export default class FileController {
@@ -8,23 +17,27 @@ export default class FileController {
    * @param {Buffer} content 
    * @param {Object} options 
    */
-  writeFile(fileName, content, options?) {
-    fs.writeFileSync(fileName, content, options)
+  public static writeFile(
+    fileName: PathOrFileDescriptor,
+    content: string | NodeJS.ArrayBufferView,
+    options?: WriteFileOptions
+  ): void {
+    writeFileSync(fileName, content, options)
   }
 
   /**
    * Remove directory contents and recreate the directory.
    * @param {String} directory 
    */
-  mkdir(directory) {
-    if (fs.existsSync(directory)){
-      const directoryContents = fs.readdirSync(directory)
+  public static mkdir(directory: string): void {
+    if (existsSync(directory)){
+      const directoryContents = readdirSync(directory)
 
       for (const fileName of directoryContents) {
-        fs.rmSync(path.join(directory, fileName))
+        rmSync(path.join(directory, fileName))
       }
-      fs.rmdirSync(directory)
+      rmdirSync(directory)
     }
-    fs.mkdirSync(directory)
+    mkdirSync(directory)
   }
 }

@@ -1,4 +1,8 @@
-import { createCanvas } from 'canvas'
+import {
+  type Canvas,
+  type CanvasRenderingContext2D,
+  createCanvas
+} from 'canvas'
 import GIFEncoder from 'gifencoder'
 import BaseMediaFactory from './BaseMediaFactory'
 
@@ -11,8 +15,11 @@ class ImageFactory extends BaseMediaFactory {
    * @param {Number} height 
    * @returns image Buffer.
    */
-  public static createPNG(width, height) {
-    const canvas = this._getCanvasFrame(width, height)
+  public static createPNG(
+    width: number,
+    height: number
+  ): Buffer {
+    const canvas: Canvas = this._getCanvasFrame(width, height)
     return canvas.toBuffer('image/png')
   }
 
@@ -24,18 +31,23 @@ class ImageFactory extends BaseMediaFactory {
    * @param {Number} duration 
    * @returns image Buffer.
    */
-  public static createGIF(width, height, fps, duration) {
+  public static createGIF(
+    width: number,
+    height: number,
+    fps: number,
+    duration: number
+  ): Buffer {
     const encoder = new GIFEncoder(width, height)
 
     encoder.start()
     encoder.setRepeat(0) // 0 for repeat, -1 for no-repeat.
     encoder.setDelay(Math.ceil(1000 / fps)) // frame delay in ms.
-    encoder.setQuality(10) // image quality. 10 is default.
+    encoder.setQuality(10) // image quality (on a scale of 1 to 10).
     
     // Add frames.
     for (let i = 0; i < duration * fps; i++) {
-      const canvas = this._getCanvasFrame(width, height)
-      const context = canvas.getContext('2d')
+      const canvas: Canvas = this._getCanvasFrame(width, height)
+      const context: CanvasRenderingContext2D = canvas.getContext('2d')
       encoder.addFrame(context)
     }
 
@@ -52,9 +64,12 @@ class ImageFactory extends BaseMediaFactory {
    * @param {Number} height 
    * @returns HTML canvas.
    */
-  private static _getCanvasFrame(width, height) {
-    const canvas = createCanvas(width, height)
-    const context = canvas.getContext('2d')
+  private static _getCanvasFrame(
+    width: number,
+    height: number
+  ): Canvas {
+    const canvas: Canvas = createCanvas(width, height)
+    const context: CanvasRenderingContext2D = canvas.getContext('2d')
     
     for (let x = 0; x < width; x += SQUARE_SIZE) {
       for (let y = 0; y < height; y += SQUARE_SIZE) {
@@ -64,6 +79,6 @@ class ImageFactory extends BaseMediaFactory {
     }
     return canvas
   }
-};
+}
 
 export default ImageFactory
