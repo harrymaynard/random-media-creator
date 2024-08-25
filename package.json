@@ -1,13 +1,18 @@
 {
   "name": "random-media-creator",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "CLI tool for generating random media",
-  "main": "index.js",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-png": "node --import=tsx index.ts png 3",
+    "test-gif": "node --import=tsx index.ts gif 3",
+    "test-version": "node --import=tsx index.ts version",
+    "test-help": "node --import=tsx index.ts help"
   },
   "bin": {
-    "rmc": "./index.js"
+    "rmc": "./index.ts"
   },
   "repository": {
     "type": "git",
@@ -26,5 +31,10 @@
     "canvas": "^2.8.0",
     "commander": "^8.0.0",
     "gifencoder": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.17.0",
+    "typescript": "~5.5.4"
   }
 }

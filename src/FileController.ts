@@ -1,15 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs'
+import path from 'path'
 
-class FileController {
+export default class FileController {
   /**
    * Writes file with specified name and contents.
    * @param {String} fileName 
    * @param {Buffer} content 
    * @param {Object} options 
    */
-  writeFile(fileName, content, options) {
-    fs.writeFileSync(fileName, content, options);
+  writeFile(fileName, content, options?) {
+    fs.writeFileSync(fileName, content, options)
   }
 
   /**
@@ -18,15 +18,13 @@ class FileController {
    */
   mkdir(directory) {
     if (fs.existsSync(directory)){
-      const directoryContents = fs.readdirSync(directory);
+      const directoryContents = fs.readdirSync(directory)
 
       for (const fileName of directoryContents) {
-        fs.rmSync(path.join(directory, fileName));
+        fs.rmSync(path.join(directory, fileName))
       }
-      fs.rmdirSync(directory);
+      fs.rmdirSync(directory)
     }
-    fs.mkdirSync(directory);
+    fs.mkdirSync(directory)
   }
 }
-
-module.exports = FileController;
