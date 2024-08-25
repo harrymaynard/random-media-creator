@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    name: Run tests
+    name: Run test commands
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -19,14 +19,14 @@ jobs:
       - name: Install dependencies
         run: npm i
 
-      - name: Test \'version\' command
+      - name: Test 'version' command
         run: npm run test-version
 
-      - name: Test \'help\'' command
+      - name: Test 'help' command
         run: npm run test-help
 
-      - name: Test \'png\' command
+      - name: Test 'png' command
         run: npm run test-png
 
-      - name: Test \'gif\' command
+      - name: Test 'gif' command
         run: npm run test-gif
