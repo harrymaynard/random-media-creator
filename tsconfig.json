@@ -9,7 +9,10 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "index.ts",

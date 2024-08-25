@@ -1,7 +1,7 @@
-import { Command, type OptionValues } from 'commander'
-import BaseCommand from './BaseCommand'
-import FileController from '../FileController'
-import ImageFactory from '../factories/ImageFactory'
+import { Command, InvalidArgumentError, type OptionValues } from 'commander'
+import BaseCommand from '@/commands/BaseCommand'
+import FileController from '@/FileController'
+import ImageFactory from '@/factories/ImageFactory'
 
 const DEFAULT_IMAGE_WIDTH: number = 640
 const DEFAULT_IMAGE_HEIGHT: number = 480
@@ -12,24 +12,12 @@ export default class PNGCommand extends BaseCommand {
     super()
     this.command = new Command('png')
     this.command
-      .argument('<count>', 'number of images to create')
-      .option('-w, --width <width>', 'width of the GIF', `${DEFAULT_IMAGE_WIDTH}`)
-      .option('-h, --height <height>', 'height of the GIF', `${DEFAULT_IMAGE_HEIGHT}`)
-      .action(async (count) => {
+      .argument('<count>', 'number of images to create', this.positiveIntParser)
+      .option('-w, --width <width>', 'width of the PNG', this.positiveIntParser, DEFAULT_IMAGE_WIDTH)
+      .option('-h, --height <height>', 'height of the PNG', this.positiveIntParser, DEFAULT_IMAGE_HEIGHT)
+      .action(async (numImages) => {
         const options: OptionValues = this.command.opts()
-        const numImages: number = parseInt(count)
-        const width: number = parseInt(options.width)
-        const height: number = parseInt(options.height)
-
-        // Check for non-numeric options.
-        if (isNaN(width)) {
-          console.error('\'width\' option must be numeric.')
-          return
-        }
-        if (isNaN(height)) {
-          console.error('\'height\' option must be numeric.')
-          return
-        }
+        const { width, height } = options
 
         // Create images directory.
         FileController.mkdir(DIRECTORY_PATH)

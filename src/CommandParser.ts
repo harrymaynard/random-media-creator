@@ -1,8 +1,8 @@
 import { Command } from 'commander'
 import packageJSON from '../package.json'
-import GIFCommand from './commands/GIFCommand'
-import PNGCommand from './commands/PNGCommand'
-import VersionCommand from './commands/VersionCommand'
+import GIFCommand from '@/commands/GIFCommand'
+import PNGCommand from '@/commands/PNGCommand'
+import VersionCommand from '@/commands/VersionCommand'
 
 export default class CommandParser {
   private program: Command

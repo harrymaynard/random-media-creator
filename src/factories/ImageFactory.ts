@@ -4,7 +4,7 @@ import {
   createCanvas
 } from 'canvas'
 import GIFEncoder from 'gifencoder'
-import BaseMediaFactory from './BaseMediaFactory'
+import BaseMediaFactory from '@/factories/BaseMediaFactory'
 
 const SQUARE_SIZE: number = 10
 

@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import packageJSON from '../../package.json'
-import BaseCommand from './BaseCommand'
+import BaseCommand from '@/commands/BaseCommand'
 
 export default class VersionCommand extends BaseCommand {
   constructor() {

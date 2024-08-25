@@ -1,4 +1,4 @@
-import CommandParser from './CommandParser'
+import CommandParser from '@/CommandParser'
 
 export default class Application {
   constructor() {
