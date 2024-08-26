@@ -1,9 +1,10 @@
-import {
-  type Canvas,
-  type CanvasRenderingContext2D
-} from 'canvas'
+import { type Canvas } from 'canvas'
 import FfmpegCommand from 'fluent-ffmpeg'
+import { path as ffmpegPath} from '@ffmpeg-installer/ffmpeg'
 import BaseMediaFactory from '@/factories/BaseMediaFactory'
+import FileController from '@/FileController'
+
+const TEMP_FRAMES_DIR: string = './rmc-temp'
 
 class VideoFactory extends BaseMediaFactory {
   /**
@@ -15,27 +16,34 @@ class VideoFactory extends BaseMediaFactory {
    * @returns video Buffer.
    */
   public static async createMP4(
+    filePath: string,
     width: number,
     height: number,
     fps: number,
     duration: number
-  ): Buffer {
-    const ffmpeg = new FfmpegCommand()
-    await new Promise((resolve, reject) => {
-      ffmpeg()
-  
-        // Tell FFmpeg to stitch all images together in the provided directory
-        .input(framesFilepath)
+  ): Promise<void> {
+
+    // Create temporary frames directory.
+    FileController.mkdir(TEMP_FRAMES_DIR)
+
+    // Create temporary directory for frames, and create them.
+    for (let i = 0; i < duration * fps; i++) {
+      const frameFilePath: string = `${TEMP_FRAMES_DIR}/frame-${i}.png`
+      const canvas: Canvas = this.getCanvasFrame(width, height)
+      const imageBuffer: Buffer = canvas.toBuffer('image/png')
+      FileController.writeFile(frameFilePath, imageBuffer)
+    }
+    
+    // Create video from frames using FFMPEG.
+    await new Promise<void>((resolve, reject) => {
+      const ffmpeg = new FfmpegCommand()
+      ffmpeg.setFfmpegPath(ffmpegPath)
+      ffmpeg
+        .input(`${TEMP_FRAMES_DIR}/frame-%d.png`)
+        //.input(`${FRAMES_DIR_PATH}/`)
         .inputOptions([
           // Set input frame rate
-          `-framerate ${frameRate}`,
-        ])
-  
-        // Add the soundtrack
-        .input(soundtrackFilePath)
-        .audioFilters([
-          // Fade out the volume 2 seconds before the end
-          `afade=out:st=${duration - 2}:d=2`,
+          `-framerate ${fps}`,
         ])
   
         .videoCodec('libx264')
@@ -50,13 +58,16 @@ class VideoFactory extends BaseMediaFactory {
         // be longer than the desired video length
         .duration(duration)
         // Set output frame rate
-        .fps(frameRate)
+        .fps(fps)
   
         // Resolve or reject (throw an error) the Promise once FFmpeg completes
-        .saveToFile(outputFilepath)
+        .saveToFile(filePath)
         .on('end', () => resolve())
         .on('error', (error) => reject(new Error(error)))
     })
+
+    // Remove temporary frames directory.
+    FileController.rmDir(TEMP_FRAMES_DIR)
   }
 }
 

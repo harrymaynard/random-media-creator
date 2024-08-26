@@ -40,4 +40,19 @@ export default class FileController {
     }
     mkdirSync(directory)
   }
+
+  /**
+   * Remove directory and contents.
+   * @param {String} directory 
+   */
+  public static rmDir(directory: string): void {
+    if (existsSync(directory)){
+      const directoryContents = readdirSync(directory)
+
+      for (const fileName of directoryContents) {
+        rmSync(path.join(directory, fileName))
+      }
+      rmdirSync(directory)
+    }
+  }
 }

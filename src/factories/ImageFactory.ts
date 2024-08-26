@@ -4,24 +4,29 @@ import {
 } from 'canvas'
 import GIFEncoder from 'gifencoder'
 import BaseMediaFactory from '@/factories/BaseMediaFactory'
+import FileController from '@/FileController'
 
 class ImageFactory extends BaseMediaFactory {
   /**
    * Creates a random PNG image.
+   * @param {String} filePath
    * @param {Number} width 
    * @param {Number} height 
    * @returns image Buffer.
    */
   public static createPNG(
+    filePath: string,
     width: number,
     height: number
-  ): Buffer {
+  ): void {
     const canvas: Canvas = this.getCanvasFrame(width, height)
-    return canvas.toBuffer('image/png')
+    const imageBuffer: Buffer = canvas.toBuffer('image/png')
+    FileController.writeFile(filePath, imageBuffer)
   }
 
   /**
    * Creates a random animated GIF image.
+   * @param {String} filePath
    * @param {Number} width 
    * @param {Number} height 
    * @param {Number} fps 
@@ -29,11 +34,12 @@ class ImageFactory extends BaseMediaFactory {
    * @returns image Buffer.
    */
   public static createGIF(
+    filePath: string,
     width: number,
     height: number,
     fps: number,
     duration: number
-  ): Buffer {
+  ): void {
     const encoder = new GIFEncoder(width, height)
 
     encoder.start()
@@ -51,8 +57,9 @@ class ImageFactory extends BaseMediaFactory {
     // Finalize encoding.
     encoder.finish()
 
-    // Return data Buffer.
-    return encoder.out.getData()
+    // Write data Buffer to file.
+    const imageBuffer: Buffer = encoder.out.getData()
+    FileController.writeFile(filePath, imageBuffer)
   }
 }
 

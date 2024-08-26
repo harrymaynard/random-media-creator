@@ -1,11 +1,11 @@
-import { Command, InvalidArgumentError, type OptionValues } from 'commander'
+import { Command, type OptionValues } from 'commander'
 import BaseCommand from '@/commands/BaseCommand'
 import FileController from '@/FileController'
 import ImageFactory from '@/factories/ImageFactory'
 
 const DEFAULT_IMAGE_WIDTH: number = 640
 const DEFAULT_IMAGE_HEIGHT: number = 480
-const DIRECTORY_PATH: string = './rmc-images'
+const OUTPUT_DIRECTORY: string = './rmc-output'
 
 export default class PNGCommand extends BaseCommand {
   constructor() {
@@ -20,13 +20,12 @@ export default class PNGCommand extends BaseCommand {
         const { width, height } = options
 
         // Create images directory.
-        FileController.mkdir(DIRECTORY_PATH)
+        FileController.mkdir(OUTPUT_DIRECTORY)
 
         // Create image(s).
         for (let i = 0; i < numImages; i++) {
-          const filePath = `${DIRECTORY_PATH}/image-${i}.png`
-          const imageBuffer = ImageFactory.createPNG(width, height)
-          FileController.writeFile(filePath, imageBuffer)
+          const filePath = `${OUTPUT_DIRECTORY}/image-${i}.png`
+          ImageFactory.createPNG(filePath, width, height)
           console.log(`Created PNG at: ${filePath}`)
         }
 

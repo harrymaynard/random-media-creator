@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "test-png": "node --import=tsx index.ts png 3",
     "test-gif": "node --import=tsx index.ts gif 3",
+    "test-mp4": "node --import=tsx index.ts mp4 3",
     "test-version": "node --import=tsx index.ts version",
     "test-help": "node --import=tsx index.ts help"
   },
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/harrymaynard/random-media-creator#readme",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "canvas": "^2.8.0",
     "commander": "^8.0.0",
     "fluent-ffmpeg": "^2.1.3",
