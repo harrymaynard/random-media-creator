@@ -30,3 +30,6 @@ jobs:
 
       - name: Test 'gif' command
         run: npm run test-gif
+
+      - name: Test 'mp4' command
+        run: npm run test-mp4
