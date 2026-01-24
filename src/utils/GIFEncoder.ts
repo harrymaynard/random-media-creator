@@ -73,7 +73,7 @@ class GIFEncoder {
   public createReadStream(rs: stream.Readable | null = null): stream.Readable {
     if (!rs) {
       rs = new stream.Readable()
-      rs._read = function () {}
+      rs._read = () => {}
     }
     this.readStreams.push(rs)
     return rs
@@ -91,7 +91,7 @@ class GIFEncoder {
     }
 
     const ws = new stream.Duplex({ objectMode: true });
-    ws._read = function () {}
+    ws._read = () => {}
     this.createReadStream(ws)
 
       
