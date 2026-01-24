@@ -21,19 +21,7 @@
  * (JavaScript port 2012 by Johan Nordberg)
  */
 
-/*
-  Constructor: NeuQuant
-
-  Arguments:
-
-  pixels - array of pixels in RGB format
-  samplefac - sampling factor 1 to 30 where lower is better quality
-
-  >
-  > pixels = [r, g, b, r, g, b, r, g, b, ..]
-  >
-*/
-class NeuQuant {
+export default class NeuQuant {
   // number of learning cycles
   private static readonly ncycles: number = 100
   // number of colors used
@@ -47,7 +35,6 @@ class NeuQuant {
   private static readonly intbiasshift: number = 16
   private static readonly intbias: number = (1 << NeuQuant.intbiasshift)
   private static readonly gammashift: number = 10
-  private static readonly gamma: number = (1 << NeuQuant.gammashift)
   private static readonly betashift: number = 10
   /* beta = 1/1024 */
   private static readonly beta: number = (NeuQuant.intbias >> NeuQuant.betashift)
@@ -96,6 +83,10 @@ class NeuQuant {
   private pixels: Uint8Array
   private samplefac: number
 
+  /**
+  @param pixels - array of pixels in RGB format
+  @param samplefac - sampling factor 1 to 30 where lower is better quality
+  */
   constructor(pixels: Uint8Array, samplefac: number) {
     this.pixels = pixels
     this.samplefac = samplefac
@@ -106,10 +97,8 @@ class NeuQuant {
     this.radpower = new Int32Array(NeuQuant.netsize >> 3)
   }
 
-  /*
-    Private Method: init
-
-    sets up arrays
+  /**
+  sets up arrays
   */
   private init(): void {
     this.network = []
@@ -129,10 +118,8 @@ class NeuQuant {
     }
   }
 
-  /*
-    Private Method: unbiasnet
-
-    unbiases network to give byte values 0..255 and record position i to prepare for sort
+  /**
+  unbiases network to give byte values 0..255 and record position i to prepare for sort
   */
   private unbiasnet(): void {
     for (let i: number = 0; i < NeuQuant.netsize; i++) {
@@ -143,10 +130,8 @@ class NeuQuant {
     }
   }
 
-  /*
-    Private Method: altersingle
-
-    moves neuron *i* towards biased (b,g,r) by factor *alpha*
+  /**
+  moves neuron *i* towards biased (b,g,r) by factor *alpha*
   */
   private altersingle(alpha: number, i: number, b: number, g: number, r: number): void {
     this.network[i][0] -= (alpha * (this.network[i][0] - b)) / NeuQuant.initalpha
@@ -154,10 +139,8 @@ class NeuQuant {
     this.network[i][2] -= (alpha * (this.network[i][2] - r)) / NeuQuant.initalpha
   }
 
-  /*
-    Private Method: alterneigh
-
-    moves neurons in *radius* around index *i* towards biased (b,g,r) by factor *alpha*
+  /**
+  moves neurons in *radius* around index *i* towards biased (b,g,r) by factor *alpha*
   */
   private alterneigh(radius: number, i: number, b: number, g: number, r: number): void {
     const lo: number = Math.abs(i - radius)
@@ -188,12 +171,13 @@ class NeuQuant {
     }
   }
 
-  /*
-    Private Method: contest
-
-    searches for biased BGR values
+  /**
+  searches for biased RGB values
   */
-  private contest(b: number, g: number, r: number): number {
+  private contest(red: number, blue: number, green: number): number {
+    const b: number = red
+    const g: number = blue
+    const r: number = green
     /*
       finds closest neuron (min dist) and updates freq
       finds best neuron (min dist-bias) and returns position
@@ -237,10 +221,8 @@ class NeuQuant {
     return bestbiaspos
   }
 
-  /*
-    Private Method: inxbuild
-
-    sorts network and builds netindex[0..255]
+  /**
+  sorts network and builds netindex[0..255]
   */
   private inxbuild(): void {
     let i: number
@@ -294,10 +276,8 @@ class NeuQuant {
       this.netindex[j] = NeuQuant.maxnetpos // really 256
   }
 
-  /*
-    Private Method: inxsearch
-
-    searches for BGR values 0..255 and returns a color index
+  /**
+  searches for BGR values 0..255 and returns a color index
   */
   private inxsearch(b: number, g: number, r: number): number {
     let a: number
@@ -358,10 +338,8 @@ class NeuQuant {
     return best
   }
 
-  /*
-    Private Method: learn
-
-    "Main Learning Loop"
+  /**
+  Main Learning Loop
   */
   private learn(): void {
     let i: number
@@ -428,13 +406,11 @@ class NeuQuant {
     }
   }
 
-  /*
-    Method: buildColormap
-
-    1. initializes network
-    2. trains it
-    3. removes misconceptions
-    4. builds colorindex
+  /**
+  1. initializes network
+  2. trains it
+  3. removes misconceptions
+  4. builds colorindex
   */
   public buildColormap(): void {
     this.init()
@@ -443,16 +419,14 @@ class NeuQuant {
     this.inxbuild()
   }
 
-  /*
-    Method: getColormap
+  /**
+  builds colormap from the index
 
-    builds colormap from the index
+  returns array in the format:
 
-    returns array in the format:
-
-    >
-    > [r, g, b, r, g, b, r, g, b, ..]
-    >
+  >
+  > [r, g, b, r, g, b, r, g, b, ..]
+  >
   */
   public getColormap(): number[] {
     const map: number[] = []
@@ -471,15 +445,15 @@ class NeuQuant {
     return map
   }
 
-  /*
-    Method: lookupRGB
-
-    looks for the closest *r*, *g*, *b* color in the map and
-    returns its index
+  /**
+  Looks for the closest *r*, *g*, *b* color in the map and
+  returns its index
+  @param r - red value 0..255
+  @param g - green value 0..255
+  @param b - blue value 0..255
+  @returns color index 0..255
   */
-  public lookupRGB(b: number, g: number, r: number): number {
-    return this.inxsearch(b, g, r)
+  public lookupRGB(r: number, g: number, b: number): number {
+    return this.inxsearch(r, g, b)
   }
 }
-
-export default NeuQuant
