@@ -2,7 +2,7 @@ import {
   type Canvas,
   type CanvasRenderingContext2D
 } from 'canvas'
-import GIFEncoder from 'gifencoder'
+import GIFEncoder from '@/utils/GIFEncoder'
 import BaseMediaFactory from '@/factories/BaseMediaFactory'
 import FileController from '@/FileController'
 
