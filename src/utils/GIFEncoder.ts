@@ -9,7 +9,7 @@
 */
 
 import stream from 'stream'
-import NeuQuant from './TypedNeuQuant'
+import NeuQuant from './NeuQuant'
 import LZWEncoder from './LZWEncoder'
 import ByteArray from './ByteArray'
 
